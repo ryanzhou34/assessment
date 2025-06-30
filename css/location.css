@@ -39,10 +39,15 @@ body {
     transition: transform 0.3s ease;
     width: 350px;
     height: 400px;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
 }
 
 .place:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .place img {
