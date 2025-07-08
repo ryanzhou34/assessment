@@ -39,16 +39,30 @@ body{
     line-height: 1.6;
     margin-bottom: 20px;
 }
-@media (max-width: 600px) {
-    .main-content {
-        padding: 40px 20px;
-        max-width: 90%;
-    }
-    .title {
-        font-size: 24px;
-    }
-    .information {
-        font-size: 18px;
+@media (max-width: 768px) {
+    body {
+        min-height: 100vh;
     }
     
+    .main-content {
+        padding: 40px 25px;
+        max-width: 90%;
+        width: 85%;
+        top: 42%;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        left: 50%;
+    }
+    
+    .title {
+        font-size: 32px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .information {
+        font-size: 22px;
+        text-align: center;
+        line-height: 1.6;
+    }
 }
