@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from PIL import Image, ImageTk
 
 QUESTIONS = [
     {"question": "When did World War II end?", "choices": ["1945", "1946", "1943", "1939"], "answer": "1945"},
@@ -16,32 +17,62 @@ QUESTIONS = [
 
 root = tk.Tk()
 root.title("History Quiz")
-root.geometry("400x300")
+root.geometry("500x550")
+root.config(bg="#2C3E50")
 
 question_number = 0
+score = 0
 
-question_label = tk.Label(root, text="", font=("Arial", 14), wraplength=350, width=40)
+title_label = tk.Label(
+    root,
+    text="History Quiz",
+    font=("Arial", 24, "bold"),
+    bg="#2C3E50",
+    fg="white"
+)
+title_label.pack(pady=10)
+try:
+    image = Image.open("history.jpg") 
+    image = image.resize((250, 150))
+    quiz_image = ImageTk.PhotoImage(image)
+
+    image_label = tk.Label(root, image=quiz_image, bg="#2C3E50")
+    image_label.pack(pady=10)
+
+except:
+    image_label = tk.Label(
+        root,
+        text="Image not found",
+        font=("Arial", 12),
+        bg="#2C3E50",
+        fg="white"
+    )
+    image_label.pack(pady=10)
+
+question_label = tk.Label(
+    root,
+    text="",
+    font=("Arial", 14, "bold"),
+    wraplength=420,
+    bg="#34495E",
+    fg="white",
+    padx=15,
+    pady=15
+)
 question_label.pack(pady=20)
 
-button_frame = tk.Frame(root)
+button_frame = tk.Frame(root, bg="#2C3E50")
 button_frame.pack()
 
-def check_answer(selected_choice):
-    global question_number
+score_label = tk.Label(
+    root,
+    text="Score: 0",
+    font=("Arial", 12, "bold"),
+    bg="#2C3E50",
+    fg="white"
+)
+score_label.pack(pady=15)
 
-    current_question = QUESTIONS[question_number]
-    if selected_choice == current_question["answer"]:
-        messagebox.showinfo("Correct!", "That's the correct answer!")
-    else:
-        messagebox.showerror("Incorrect", f"Wrong answer! The correct answer was: {current_question['answer']}")
-
-    question_number += 1
-    if question_number < len(QUESTIONS):
-        show_question()
-    else:
-        question_label.config(text="Quiz Completed!")
-        for widget in button_frame.winfo_children():
-            widget.destroy()
 
 def show_question():
     global question_number
@@ -56,9 +87,43 @@ def show_question():
         tk.Button(
             button_frame,
             text=choice,
-            width=20,
+            width=25,
+            font=("Arial", 12),
+            bg="#3498DB",
+            fg="white",
+            activebackground="#2980B9",
+            activeforeground="white",
             command=lambda c=choice: check_answer(c)
         ).pack(pady=5)
+
+
+def check_answer(selected_choice):
+    global question_number, score
+
+    current_question = QUESTIONS[question_number]
+
+    if selected_choice == current_question["answer"]:
+        score += 1
+        score_label.config(text=f"Score: {score}")
+        messagebox.showinfo("Correct!", "That's the correct answer!")
+    else:
+        messagebox.showerror(
+            "Incorrect",
+            f"Wrong answer! The correct answer was: {current_question['answer']}"
+        )
+
+    question_number += 1
+
+    if question_number < len(QUESTIONS):
+        show_question()
+    else:
+        question_label.config(
+            text=f"Quiz Completed! Your final score is {score}/{len(QUESTIONS)}"
+        )
+
+        for widget in button_frame.winfo_children():
+            widget.destroy()
+
 
 show_question()
 root.mainloop()
